@@ -27,15 +27,6 @@ Colors are defined semantically (e.g., `window_background`, `text_primary`, `til
 ### UI Preview
 ![Smart Home Dashboard](https://repository-images.githubusercontent.com/1271584303/b279b3fb-9362-45ab-bf0a-9ae79c73b7c4)
 
-### Layout Inspector & GPU Profiler
-*To demonstrate the zero-nested hierarchy and the absence of GPU overdraw.*
-
-![Layout Inspector Placeholder](path/to/layout_inspector.png)
-> *Notice the 100% flat hierarchy. All Views are direct children of the root ConstraintLayout.*
-
-![GPU Overdraw Placeholder](path/to/gpu_overdraw.png)
-> *The GPU Overdraw tool shows mostly true color (no overdraw) and single overdraw layers, validating our optimized approach.*
-
 ## 💻 Code Quality
 - Clean, readable code structure following DRY principles.
 - Detailed, educational comments explaining *why* certain architectural UI choices were made (e.g., the specific benefits of `Barrier` over standard margins).
