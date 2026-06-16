@@ -24,9 +24,8 @@ Colors are defined semantically (e.g., `window_background`, `text_primary`, `til
 
 ## 📸 Screenshots & Profiling
 
-### UI Previews
-![Light Theme Placeholder](path/to/light_theme_screenshot.png)
-![Dark Theme Placeholder](path/to/dark_theme_screenshot.png)
+### UI Preview
+![Smart Home Dashboard](https://opengraph.githubassets.com/1/Artem-SPb/Smart-Home-Dashboard)
 
 ### Layout Inspector & GPU Profiler
 *To demonstrate the zero-nested hierarchy and the absence of GPU overdraw.*
