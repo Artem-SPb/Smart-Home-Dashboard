@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Theme Colors -->
+    <!-- Backgrounds -->
+    <color name="window_background">#121212</color>
+    <color name="tile_bg_inactive">#1E1E1E</color>
+    <color name="tile_bg_active">#1565C0</color>
+    <color name="slider_track">#424242</color>
+    <color name="slider_progress">#64B5F6</color>
+    <color name="slider_thumb">#90CAF9</color>
+
+    <!-- Text -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#BDBDBD</color>
+    <color name="text_tile_active">#FFFFFF</color>
+    <color name="text_tile_inactive">#BDBDBD</color>
+
+    <!-- Icons -->
+    <color name="icon_active">#FFFFFF</color>
+    <color name="icon_inactive">#9E9E9E</color>
+</resources>

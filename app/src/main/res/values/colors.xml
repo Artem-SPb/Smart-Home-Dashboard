@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+
+    <!-- Light Theme Colors -->
+    <!-- Backgrounds -->
+    <color name="window_background">#F5F7FA</color>
+    <color name="tile_bg_inactive">#FFFFFF</color>
+    <color name="tile_bg_active">#E3F2FD</color>
+    <color name="slider_track">#E0E0E0</color>
+    <color name="slider_progress">#2196F3</color>
+    <color name="slider_thumb">#1976D2</color>
+
+    <!-- Text -->
+    <color name="text_primary">#2C3E50</color>
+    <color name="text_secondary">#7F8C8D</color>
+    <color name="text_tile_active">#1565C0</color>
+    <color name="text_tile_inactive">#7F8C8D</color>
+
+    <!-- Icons -->
+    <color name="icon_active">#1976D2</color>
+    <color name="icon_inactive">#B0BEC5</color>
 </resources>

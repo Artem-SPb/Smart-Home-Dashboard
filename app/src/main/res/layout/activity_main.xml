@@ -1,19 +1,360 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/window_background"
     tools:context=".MainActivity">
 
+    <!--
+         Мы используем только один корневой ConstraintLayout для абсолютно плоской иерархии.
+         Это предотвращает GPU Overdraw (перерисовку пикселей) и позволяет добиться 60 FPS,
+         так как системе не нужно обходить вложенные ViewGroup (LinearLayout, FrameLayout).
+    -->
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/text_greeting"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="Hello, Artem!"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_greeting"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="Welcome to your Smart Home"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/text_size_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_greeting" />
+
+    <TextView
+        android:id="@+id/text_temp_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="Temperature"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_subtitle" />
+
+    <TextView
+        android:id="@+id/text_temp_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="22°C"
+        android:textColor="@color/slider_progress"
+        android:textSize="@dimen/text_size_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/text_temp_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/text_temp_title" />
+
+    <SeekBar
+        android:id="@+id/seekbar_temp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:max="30"
+        android:progress="22"
+        android:progressTint="@color/slider_progress"
+        android:thumbTint="@color/slider_thumb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_temp_title" />
+
+    <!-- Обучающий комментарий:
+         Guideline позволяет нам создать гибкую "сетку" без использования LinearLayout с layout_weight.
+         Здесь вертикальная линия ровно по центру экрана (50%).
+    -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_v_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <!-- TILE 1: LIGHT -->
+    <View
+        android:id="@+id/bg_tile_light"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:background="@drawable/bg_tile_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/guideline_v_center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/seekbar_temp" />
+
+    <ImageView
+        android:id="@+id/icon_light"
+        android:layout_width="@dimen/icon_size_main"
+        android:layout_height="@dimen/icon_size_main"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:src="@drawable/ic_light"
+        app:tint="@color/icon_inactive"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_light"
+        app:layout_constraintTop_toTopOf="@id/bg_tile_light"
+        android:importantForAccessibility="no" />
+        
+    <!-- Обучающий комментарий:
+         Barrier здесь нужен для того, чтобы заголовок плитки всегда был ниже иконки устройства.
+         Если бы мы добавили еще одну иконку (например, предупреждение) рядом с основной,
+         Barrier выровнялся бы по самому нижнему краю из них двоих.
+         Это гораздо безопаснее, чем жесткая привязка margin'ами к одному элементу.
+    -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="icon_light" />
+
+    <TextView
+        android:id="@+id/title_light"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="Light"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_tile_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/status_light"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_light"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_light" />
+
+    <TextView
+        android:id="@+id/status_light"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:text="Off"
+        android:textColor="@color/text_tile_inactive"
+        android:textSize="@dimen/text_size_tile_status"
+        app:layout_constraintBottom_toBottomOf="@id/bg_tile_light"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_light"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_light" />
+
+    <!-- TILE 2: CAMERA -->
+    <View
+        android:id="@+id/bg_tile_camera"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:background="@drawable/bg_tile_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_v_center"
+        app:layout_constraintTop_toBottomOf="@id/seekbar_temp" />
+
+    <ImageView
+        android:id="@+id/icon_camera"
+        android:layout_width="@dimen/icon_size_main"
+        android:layout_height="@dimen/icon_size_main"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:src="@drawable/ic_camera"
+        app:tint="@color/icon_inactive"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_camera"
+        app:layout_constraintTop_toTopOf="@id/bg_tile_camera"
+        android:importantForAccessibility="no" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="icon_camera" />
+
+    <TextView
+        android:id="@+id/title_camera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="Cameras"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_tile_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/status_camera"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_camera"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_camera" />
+
+    <TextView
+        android:id="@+id/status_camera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:text="Off"
+        android:textColor="@color/text_tile_inactive"
+        android:textSize="@dimen/text_size_tile_status"
+        app:layout_constraintBottom_toBottomOf="@id/bg_tile_camera"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_camera"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_camera" />
+
+    <!-- TILE 3: HUMIDITY -->
+    <View
+        android:id="@+id/bg_tile_humidity"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:background="@drawable/bg_tile_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/guideline_v_center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bg_tile_light" />
+
+    <ImageView
+        android:id="@+id/icon_humidity"
+        android:layout_width="@dimen/icon_size_main"
+        android:layout_height="@dimen/icon_size_main"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:src="@drawable/ic_humidity"
+        app:tint="@color/icon_inactive"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_humidity"
+        app:layout_constraintTop_toTopOf="@id/bg_tile_humidity"
+        android:importantForAccessibility="no" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="icon_humidity" />
+
+    <TextView
+        android:id="@+id/title_humidity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="Humidity"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_tile_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/status_humidity"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_humidity"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_humidity" />
+
+    <TextView
+        android:id="@+id/status_humidity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:text="Off"
+        android:textColor="@color/text_tile_inactive"
+        android:textSize="@dimen/text_size_tile_status"
+        app:layout_constraintBottom_toBottomOf="@id/bg_tile_humidity"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_humidity"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_humidity" />
+
+    <!-- TILE 4: SOCKETS -->
+    <View
+        android:id="@+id/bg_tile_socket"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:background="@drawable/bg_tile_selector"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_v_center"
+        app:layout_constraintTop_toBottomOf="@id/bg_tile_camera" />
+
+    <ImageView
+        android:id="@+id/icon_socket"
+        android:layout_width="@dimen/icon_size_main"
+        android:layout_height="@dimen/icon_size_main"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginTop="@dimen/margin_default"
+        android:src="@drawable/ic_socket"
+        app:tint="@color/icon_inactive"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_socket"
+        app:layout_constraintTop_toTopOf="@id/bg_tile_socket"
+        android:importantForAccessibility="no" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_socket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="icon_socket" />
+
+    <TextView
+        android:id="@+id/title_socket"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:text="Sockets"
+        android:textColor="@color/text_primary"
+        android:textSize="@dimen/text_size_tile_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/status_socket"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_socket"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_socket" />
+
+    <TextView
+        android:id="@+id/status_socket"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_default"
+        android:layout_marginEnd="@dimen/margin_default"
+        android:layout_marginBottom="@dimen/margin_default"
+        android:text="Off"
+        android:textColor="@color/text_tile_inactive"
+        android:textSize="@dimen/text_size_tile_status"
+        app:layout_constraintBottom_toBottomOf="@id/bg_tile_socket"
+        app:layout_constraintEnd_toEndOf="@id/bg_tile_socket"
+        app:layout_constraintStart_toStartOf="@id/bg_tile_socket" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
